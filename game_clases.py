@@ -105,7 +105,7 @@ class Cage(Button):
     #? c- это счетчик, если четный то ходит человек
     def action(self):
         if GameField.c %2 == 0:
-            self.icon = 'krest.png'
+            self.icon = 'Cross.png'
             self.value = 'nofree'
             GameField.c+=1
             self.owner = 1
