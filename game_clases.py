@@ -3,14 +3,13 @@ from random import randint
 
 #? класс игрового поля
 class GameField:
-    c = 0
+    c = 1
 
     #? генерация игрового поля
     def __init__(self,coords):
         self.enable = False
         self.field = [[Cage(*coords[i][j]) for j in range(3)] for i in range(3)]
         self.win = False
-        self.c = 1
     
     #? ход компьютера
     def computer_go(self):
@@ -21,6 +20,8 @@ class GameField:
         self.field[i][j].icon = 'Zero.png'
         self.field[i][j].value = 'nofree'
         self.field[i][j].owner = 2
+        self.field[i][j].click = False
+        GameField.c += 1
     
     #? проверка на заполненность
     def check_full(self):
@@ -31,63 +32,34 @@ class GameField:
             full_mas.extend(matr)
         return any(full_mas)
 
-    #? проверка вертикалей
-    def check_vertic(self):
+
+    def checker(self):
         mas = self.field
-        for i in range(3):
-            if mas[0][i].owner == mas[1][i].owner == mas[2][i].owner == 2:
-                return 'computer'
-            elif mas[0][i].owner == mas[1][i].owner == mas[2][i].owner == 1:
-                return 'human'
-    
-    #? проверка горизонталей
-    def check_horizon(self):
-        mas = self.field
-        for i in range(3):
-            if mas[i][0].owner == mas[i][1].owner == mas[i][2].owner == 2:
-                return 'computer'
-            elif mas[i][0].owner == mas[i][1].owner == mas[i][2].owner == 1:
-                return 'human'
-    
-    #? проверка диагоналей
-    def check_diagonal(self):
-        mas = self.field
-        if mas[2][0].owner == mas[1][1].owner == mas[0][2].owner:
-            if mas[2][0].owner == 1:
-                return 'human'
-            elif mas[2][0].owner == 2:
-                return 'computer'
-        elif mas[0][0].owner == mas[1][1].owner == mas[2][2].owner:
-            if mas[0][0].owner == 1:
-                return 'human'
-            elif mas[0][0].owner == 2:
-                return 'computer'
-    
+        won = (
+                (mas[0][0].owner == mas[0][1].owner == mas[0][2].owner != None, mas[0][0].owner),#? проверка горизонталей
+                (mas[1][0].owner == mas[1][1].owner == mas[1][2].owner != None, mas[1][0].owner),
+                (mas[2][0].owner == mas[2][1].owner == mas[2][2].owner != None, mas[2][0].owner),
+                (mas[0][0].owner == mas[1][0].owner == mas[2][0].owner != None, mas[0][0].owner),#? проверка вертикалей
+                (mas[0][1].owner == mas[1][1].owner == mas[2][1].owner != None, mas[0][1].owner),
+                (mas[0][2].owner == mas[1][2].owner == mas[2][2].owner != None, mas[0][2].owner),
+                (mas[0][0].owner == mas[1][1].owner == mas[2][2].owner != None, mas[0][0].owner),#? проверка главной диагонали
+                (mas[2][0].owner == mas[1][1].owner == mas[0][2].owner != None, mas[1][1].owner))#? проверка побочной диагонали
+        for i in won:
+            if i[0]:
+                return i[1]
+        return None
+
     #? проверка на победу
     def check_win(self):
-        d = self.check_diagonal()
-        h = self.check_horizon()
-        v = self.check_vertic()
+        winner = self.checker()
 
-        #? определиться победитель среди d,h и v
-        winner = None
-        f = self.check_full()
-
-        if d != None:
-            winner = d
-        elif h != None:
-            winner = h
-        elif v != None:
-            winner = v
+        if winner != None:
+            return winner
         #? ничья
-        elif f == False:
-            winner = 'pat'
+        elif not(self.check_full()):
+            return 3
         else:
             return None
-        
-        return winner
-
-
 
 #? класс клетки
 class Cage(Button):
@@ -100,13 +72,17 @@ class Cage(Button):
         self.value = 'free'
         #? под чьим контолем клетка: 1-человек, 2-компьютер
         self.owner = None
+        #? можно ли нажать на кнопку
+        self.click = True
     
     #? c- это счетчик, если четный то ходит человек
     def action(self):
-        if GameField.c %2 == 0:
+        if GameField.c %2 == 0 and self.click:
             self.icon = 'Cross.png'
             self.value = 'nofree'
             GameField.c+=1
             self.owner = 1
+            self.click = False
+
 
 

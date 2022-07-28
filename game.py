@@ -9,23 +9,23 @@ def update():
         for j in range(3):
             field.field[i][j].on_click = field.field[i][j].action
 
-
     winner = field.check_win()
 
     if GameField.c%2 != 0 and winner == None:
         field.computer_go()
-        GameField.c +=1
-    
+
+
     #? проверка на победу
 
     winner = field.check_win()
     if winner != None:
-        if winner == 'computer':
+        if winner == 2:
             print_on_screen('Game over',position = (0,.3),duration = .5)
-        elif winner == 'human':
+        elif winner == 1:
             print_on_screen('Win',position = (0,.3),duration = .5)
-        elif winner == 'pat':
+        elif winner == 3:
             print_on_screen('Pat',position = (0,.3),duration = .5)
+
 
     #? проверка на начало игры
 
