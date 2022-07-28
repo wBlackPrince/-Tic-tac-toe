@@ -5,15 +5,10 @@ app = Ursina()
 
 
 def update():
-    field.field[0][0].on_click = field.field[0][0].action
-    field.field[0][1].on_click = field.field[0][1].action
-    field.field[0][2].on_click = field.field[0][2].action
-    field.field[1][0].on_click = field.field[1][0].action
-    field.field[1][1].on_click = field.field[1][1].action
-    field.field[1][2].on_click = field.field[1][2].action
-    field.field[2][0].on_click = field.field[2][0].action
-    field.field[2][1].on_click = field.field[2][1].action
-    field.field[2][2].on_click = field.field[2][2].action
+    for i in range(3):
+        for j in range(3):
+            field.field[i][j].on_click = field.field[i][j].action
+
 
     winner = field.check_win()
 
@@ -59,7 +54,6 @@ def update():
         start_game = Button(scale = (.4,.1),text = 'Game')
 
 
-    
     start_game.on_click = fstart_game
     exit_game.on_click = fexit_game
 

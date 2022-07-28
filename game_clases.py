@@ -1,4 +1,3 @@
-from cgitb import enable
 from ursina import *
 from random import randint
 
