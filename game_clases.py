@@ -3,10 +3,10 @@ from random import randint
 
 #? класс игрового поля
 class GameField:
-    c = 1
+    c = 0
 
     #? генерация игрового поля
-    def __init__(self,coords):
+    def __init__(self,coords,**kwargs):
         self.enable = False
         self.field = [[Cage(*coords[i][j]) for j in range(3)] for i in range(3)]
         self.win = False
@@ -64,11 +64,8 @@ class GameField:
 #? класс клетки
 class Cage(Button):
     def __init__(self,x,y):
-        super().__init__()
-        self.x = x
-        self.y = y
-        self.scale = .1
-        self.color = color.white
+        super().__init__(x = x,y = y,scale = .1,color = color.white,on_click = self.action,enabled = False)
+
         self.value = 'free'
         #? под чьим контолем клетка: 1-человек, 2-компьютер
         self.owner = None

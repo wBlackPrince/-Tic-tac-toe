@@ -1,19 +1,15 @@
+from cgitb import enable
 from ursina import *
 from game_clases import *
 
 app = Ursina()
-
+window.fullscreen = True
 
 def update():
-    for i in range(3):
-        for j in range(3):
-            field.field[i][j].on_click = field.field[i][j].action
-
     winner = field.check_win()
 
     if GameField.c%2 != 0 and winner == None:
         field.computer_go()
-
 
     #? проверка на победу
 
@@ -27,50 +23,45 @@ def update():
             print_on_screen('Pat',position = (0,.3),duration = .5)
 
 
-    #? проверка на начало игры
+#? проверка на начало игры
+def fstart_game():
+    global coords
+    global field
+    global start_game
 
-    def fstart_game():
-        global coords
-        global field
-        global start_game
-
-        field = GameField(coords)
-        destroy(start_game)
-        exit_game.y = -.4
+    for i in range(3):
+        for j in range(3):
+            field.field[i][j].enabled = True
     
-    #? выход в главное меню
-    def fexit_game():
-        global field
-        global exit_game
-        global start_coords
-        global start_game
-
-        exit_game.y = -12
-
-        for i in range(len(field.field)):
-            for j in range(len(field.field[i])):
-                destroy(field.field[i][j])
-        field = GameField(start_coords)
-        start_game = Button(scale = (.4,.1),text = 'Game')
+    start_game.enabled = False
+    exit_game.enabled = True
 
 
-    start_game.on_click = fstart_game
-    exit_game.on_click = fexit_game
+#? выход в главное меню
+def fexit_game():
+    global field
+    global exit_game
+    global start_game
+
+    exit_game.enabled = False
+
+    for i in range(3):
+        for j in range(3):
+            destroy(field.field[i][j])
+    field = GameField(coords,enabled = False)
+
+    start_game.enabled = True
 
 
-#? начальное поле находится за пределами камеры, с началом игры формируется новое в пределах камеры
-start_coords = coords = (((-12,12),(0,12),(12,12)),((12,0),(12,0),(12,0)),((12,12),(0,12),(12,12)))
-field = GameField(start_coords)
 
 #? координаты клеток поля
 coords = (((-.12,.12),(0,.12),(.12,.12)),((-.12,0),(0,0),(.12,0)),((-.12,-.12),(0,-.12),(.12,-.12)))
+field = GameField(coords,enabled = False)
 
 #? пользовательский интерфейс
 #? кнопка начал игры
-start_game = Button(scale = (.4,.1),text = 'Game')
-exit_game = Button(scale = (.4,.1),text = 'Exit',y=15)
-
-
+start_game = Button(scale = (.4,.1),text = 'Game',on_click = fstart_game)
+exit_game = Button(scale = (.4,.1),text = 'Exit',y = -.4,enabled = False,on_click = fexit_game)
 
 
 app.run()
