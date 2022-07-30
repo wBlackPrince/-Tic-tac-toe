@@ -25,9 +25,7 @@ def update():
 
 #? проверка на начало игры
 def fstart_game():
-    global coords
     global field
-    global start_game
 
     for i in range(3):
         for j in range(3):
@@ -40,8 +38,6 @@ def fstart_game():
 #? выход в главное меню
 def fexit_game():
     global field
-    global exit_game
-    global start_game
 
     exit_game.enabled = False
 
@@ -51,7 +47,7 @@ def fexit_game():
     field = GameField(coords,enabled = False)
 
     start_game.enabled = True
-
+    GameField.c = 0
 
 
 #? координаты клеток поля
