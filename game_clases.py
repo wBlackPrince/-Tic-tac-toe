@@ -64,7 +64,7 @@ class GameField:
 #? класс клетки
 class Cage(Button):
     def __init__(self,x,y):
-        super().__init__(x = x,y = y,scale = .1,color = color.white,on_click = self.action,enabled = False)
+        super().__init__(x = x,y = y,scale = .1,color = color.white,on_click = self.action)
 
         self.value = 'free'
         #? под чьим контолем клетка: 1-человек, 2-компьютер

@@ -1,4 +1,3 @@
-from cgitb import enable
 from ursina import *
 from game_clases import *
 
@@ -22,42 +21,21 @@ def update():
         elif winner == 3:
             print_on_screen('Pat',position = (0,.3),duration = .5)
 
-
-#? проверка на начало игры
-def fstart_game():
+def click_restart():
     global field
-
-    for i in range(3):
-        for j in range(3):
-            field.field[i][j].enabled = True
-    
-    start_game.enabled = False
-    exit_game.enabled = True
-
-
-#? выход в главное меню
-def fexit_game():
-    global field
-
-    exit_game.enabled = False
-
     for i in range(3):
         for j in range(3):
             destroy(field.field[i][j])
-    field = GameField(coords,enabled = False)
-
-    start_game.enabled = True
+    field = GameField(coords)
     GameField.c = 0
 
 
 #? координаты клеток поля
 coords = (((-.12,.12),(0,.12),(.12,.12)),((-.12,0),(0,0),(.12,0)),((-.12,-.12),(0,-.12),(.12,-.12)))
-field = GameField(coords,enabled = False)
+field = GameField(coords)
 
 #? пользовательский интерфейс
-#? кнопка начал игры
-start_game = Button(scale = (.4,.1),text = 'Game',on_click = fstart_game)
-exit_game = Button(scale = (.4,.1),text = 'Exit',y = -.4,enabled = False,on_click = fexit_game)
+restart_game = Button(scale = (.4,.1),text = 'Exit',y = -.4,on_click = click_restart)
 
 
 app.run()
