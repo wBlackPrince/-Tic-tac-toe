@@ -35,7 +35,7 @@ coords = (((-.12,.12),(0,.12),(.12,.12)),((-.12,0),(0,0),(.12,0)),((-.12,-.12),(
 field = GameField(coords)
 
 #? пользовательский интерфейс
-restart_game = Button(scale = (.4,.1),text = 'Exit',y = -.4,on_click = click_restart)
+restart_game = Button(scale = (.4,.1),text = 'Restart',y = -.4,on_click = click_restart)
 
 
 app.run()
